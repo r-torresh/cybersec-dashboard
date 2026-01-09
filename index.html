@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Dashboard</title>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const TrendingUp = () => (
+            <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+        );
+
+        const TrendingDown = () => (
+            <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+            </svg>
+        );
+
+        const Minus = () => (
+            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+            </svg>
+        );
+
+        const MetricCard = ({ title, score, trend, trendValue }) => {
+            const getTrendIcon = () => {
+                if (trend === 'up') return <TrendingUp />;
+                if (trend === 'down') return <TrendingDown />;
+                return <Minus />;
+            };
+
+            const getTrendColor = () => {
+                if (trend === 'up') return 'text-green-500';
+                if (trend === 'down') return 'text-red-500';
+                return 'text-gray-400';
+            };
+
+            return (
+                <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+                    <h3 className="text-gray-600 text-sm font-medium mb-2">{title}</h3>
+                    <div className="flex items-end justify-between">
+                        <div className="text-4xl font-bold text-gray-900">{score}</div>
+                        <div className="flex items-center gap-1">
+                            {getTrendIcon()}
+                            <span className={`text-sm font-medium ${getTrendColor()}`}>
+                                {trendValue}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        function CybersecurityDashboard() {
+            const metrics = [
+                {
+                    title: 'Security Score',
+                    score: '87/100',
+                    trend: 'up',
+                    trendValue: '+5'
+                },
+                {
+                    title: 'Threat Level',
+                    score: 'Low',
+                    trend: 'down',
+                    trendValue: '-12%'
+                },
+                {
+                    title: 'Incidents This Month',
+                    score: '3',
+                    trend: 'up',
+                    trendValue: '+2'
+                }
+            ];
+
+            return (
+                <div className="min-h-screen bg-gray-50 p-8">
+                    <div className="max-w-6xl mx-auto">
+                        <h1 className="text-3xl font-bold text-gray-900 mb-2">Cybersecurity Overview</h1>
+                        <p className="text-gray-600 mb-8">Executive Summary</p>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {metrics.map((metric, index) => (
+                                <MetricCard
+                                    key={index}
+                                    title={metric.title}
+                                    score={metric.score}
+                                    trend={metric.trend}
+                                    trendValue={metric.trendValue}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<CybersecurityDashboard />, document.getElementById('root'));
+    </script>
+</body>
+</html>
